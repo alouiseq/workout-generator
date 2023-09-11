@@ -1,25 +1,68 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import {DEFAULT_SETS, DEFAULT_REPS, DEFAULT_DURATION, WORKOUT_PLANS} from './workoutPlans'
 
-function App() {
+const App = () => {
+  const [selectedWorkout, setSelectedWorkout] = useState("");
+  const [includeAbs, setIncludeAbs] = useState(false);
+
+  const handleChange = (e) => {
+    setSelectedWorkout(e.target.value);
+  };
+
+  const toggleAbs = () => {
+    setIncludeAbs(!includeAbs);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Workout Plan Selector</h1>
+      <label>Select a workout plan: </label>
+      <select onChange={handleChange}>
+        <option value="">--Select--</option>
+        {Object.keys(WORKOUT_PLANS).map((plan, index) => (
+          <option key={index} value={plan}>
+            {plan}
+          </option>
+        ))}
+      </select>
+
+      {selectedWorkout && (
+        <div>
+          <h2>{selectedWorkout}</h2>
+          {WORKOUT_PLANS[selectedWorkout].map((exercise, index) => (
+            <div key={index}>
+              {exercise.name}: {exercise.sets || DEFAULT_SETS} sets x{" "}
+              {exercise.reps || exercise.duration || DEFAULT_REPS} (
+              {exercise.weight})
+            </div>
+          ))}
+          <div>
+            <input
+              type="checkbox"
+              id="addAbs"
+              name="addAbs"
+              value={includeAbs}
+              onChange={toggleAbs}
+            />
+            <label htmlFor="addAbs"> Include Abs Workout</label>
+          </div>
+          {includeAbs && (
+            <div>
+              <h3>Additional Abs Workout:</h3>
+              {WORKOUT_PLANS["Abs Workout Plan"].map((exercise, index) => (
+                <div key={index}>
+                  {exercise.name}: {exercise.sets || DEFAULT_SETS} sets x{" "}
+                  {exercise.reps || exercise.duration || DEFAULT_REPS} (
+                  {exercise.weight})
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
+
