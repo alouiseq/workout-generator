@@ -1,6 +1,7 @@
 export const DEFAULT_SETS = 3;
 export const DEFAULT_REPS = 6;
 export const DEFAULT_DURATION = "1 minute";
+export const DEFAULT_WORKOUT_COUNT = 5;
 
 export const WORKOUT_PLANS = {
   "Chest Workout Plan": [
